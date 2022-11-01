@@ -11,4 +11,27 @@
         select * from userinfo
     </select>
 
+<!--    List<User> getUserByNameAndPwd(@Param("user") User user); -->
+    <select id="getUserByNameAndPwd" resultType="User">
+        select * from userinfo
+        <where>
+            <if test="user.uId != null and user.uId != ''">
+                Uid = #{user.uId}
+            </if>
+            <if test="user.uName != null and user.uName != ''">
+                and Uname = #{user.uName}
+            </if>
+            <if test="user.uPwd != null and user.uPwd != ''">
+                and Upwd = #{user.uPwd}
+            </if>
+            <if test="user.uEmail != null and user.uEmail != ''">
+                and Uemail = #{user.uEmail}
+            </if>
+        </where>
+    </select>
+
+<!--    int insertUser(@Param("user") User user);-->
+    <insert id="insertUser">
+        insert into userinfo values (#{user.uId},#{user.uName}, #{user.uPwd}, #{user.uEmail})
+    </insert>
 </mapper>

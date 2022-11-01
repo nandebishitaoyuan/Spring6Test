@@ -13,4 +13,13 @@ public class User {
     //邮箱
     private String uEmail;
 
+    public User() {
+    }
+
+    public User(Integer uId, String uName, String uPwd, String uEmail) {
+        this.uId = uId;
+        this.uName = uName;
+        this.uPwd = uPwd;
+        this.uEmail = uEmail;
+    }
 }
