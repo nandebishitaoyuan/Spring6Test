@@ -6,13 +6,13 @@
 
     <!-- 在此添加sql -->
 
-<!--    List<User> selectUser();-->
+<!--    List<User> selectUser(); 全查用户-->
     <select id="selectUser" resultType="User">
         select * from userinfo
     </select>
 
-<!--    List<User> getUserByNameAndPwd(@Param("user") User user); -->
-    <select id="getUserByNameAndPwd" resultType="User">
+<!--    List<User> getUserByCondition(@Param("user") User user); 条件查用户-->
+    <select id="getUserByCondition" resultType="User">
         select * from userinfo
         <where>
             <if test="user.uId != null and user.uId != ''">
@@ -30,8 +30,30 @@
         </where>
     </select>
 
-<!--    int insertUser(@Param("user") User user);-->
+<!--    int insertUser(@Param("user") User user);  信息用户-->
     <insert id="insertUser">
         insert into userinfo values (#{user.uId},#{user.uName}, #{user.uPwd}, #{user.uEmail})
     </insert>
+
+<!--    int deleteUser(@Param("uid") Integer id);  删除用户-->
+    <delete id="deleteUser">
+        delete from userinfo where Uid = #{uid}
+    </delete>
+
+<!--    int updateUser(@Param("user") User user); 修改用户-->
+    <update id="updateUser">
+        update userinfo
+        <trim prefix="set" suffixOverrides=",">
+            <if test="user.uName != null and user.uName != ''">
+                Uname = #{user.uName},
+            </if>
+            <if test="user.uPwd != null and user.uPwd != ''">
+                Upwd = #{user.uPwd},
+            </if>
+            <if test="user.uEmail != null and user.uEmail != ''">
+                Uemail = #{user.uEmail}
+            </if>
+        </trim>
+        where Uid = #{user.uId}
+    </update>
 </mapper>

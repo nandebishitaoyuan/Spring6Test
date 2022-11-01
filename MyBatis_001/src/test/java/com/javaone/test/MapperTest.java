@@ -3,20 +3,49 @@ package com.javaone.test;
 import com.javaone.mapper.UserMapper;
 import com.javaone.pojo.User;
 import com.javaone.service.Login;
+import com.javaone.service.Register;
 import com.javaone.service.impl.LoginImpl;
-import com.javaone.util.GetMyBatis;
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import com.javaone.service.impl.RegisterImpl;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 public class MapperTest {
 
+    @Test
+    public void testUpdateUser(){
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
+        UserMapper mapper = applicationContext.getBean("userMapper", UserMapper.class);
+        User user = applicationContext.getBean("user", User.class);
+        user.setuName("嘤嘤嘤");
+        user.setuPwd("123");
+        user.setuEmail("777@gmail.com");
+        user.setuId(10005);
+        int i = mapper.updateUser(user);
+        System.out.println(i);
+    }
+    @Test
+    public void testDeleteUser(){
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
+        UserMapper mapper = applicationContext.getBean("userMapper", UserMapper.class);
+        int i = mapper.deleteUser(10008);
+        System.out.println(i);
+    }
+
+    @Test
+    public void testSpring(){
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
+        UserMapper userMapper = applicationContext.getBean("userMapper", UserMapper.class);
+        List<User> users = userMapper.selectUser();
+        User user = new User();
+        user.setuName("郝文韬");
+        user.setuPwd("123456789");
+        List<User> userList = userMapper.getUserByCondition(user);
+//        users.forEach(user -> System.out.println(user));
+        userList.forEach(System.out::println);
+    }
     @Test
     public void testServiceLogin(){
         Login login = new LoginImpl();
@@ -26,15 +55,11 @@ public class MapperTest {
 
     @Test
     public void testInsertUser() throws Exception {
-        UserMapper mapper = (UserMapper) GetMyBatis.getClass(UserMapper.class);
-        User user = new User();
-        user.setUName("难得避世桃源");
-        user.setUPwd("123456");
-        user.setUEmail("123456@qq.com");
-        int i = mapper.insertUser(user);
-        System.out.println(i > 0 ? "注册成功" : "注册失败");
+        Register register = new RegisterImpl();
+        Boolean 难得避世桃源 = register.register("难得避世桃源", "123456", "123456@qq.com");
+        System.out.println(难得避世桃源 ? "注册成功" : "注册失败");
     }
-    @Test
+    /*@Test
     public void testGetUserByNameAndPwd() throws Exception {
         UserMapper mapper = (UserMapper)GetMyBatis.getClass(UserMapper.class);
         User user = new User();
@@ -52,5 +77,5 @@ public class MapperTest {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         List<User> users = mapper.selectUser();
         users.forEach(System.out::println);
-    }
+    }*/
 }

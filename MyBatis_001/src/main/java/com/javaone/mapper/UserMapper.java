@@ -2,9 +2,11 @@ package com.javaone.mapper;
 
 import com.javaone.pojo.User;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
+@Controller
 public interface UserMapper {
 
     /**
@@ -26,4 +28,18 @@ public interface UserMapper {
      * @return 返回添加的条数
      */
     int insertUser(@Param("user") User user);
+
+    /**
+     * 通过id删除用户
+     * @param id
+     * @return 返回删除的个数
+     */
+    int deleteUser(@Param("uid") Integer id);
+
+    /**
+     * 修改用户信息
+     * @param user
+     * @return 返回修改的条数
+     */
+    int updateUser(@Param("user") User user);
 }
